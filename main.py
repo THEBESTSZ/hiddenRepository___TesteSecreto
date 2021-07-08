@@ -5,33 +5,42 @@ from pathlib import Path
 
 filedir = os.path.join(Path().absolute())
 filename = "general_ledger.xlsx"
+fileReturn = "chart_return.xlsx"
 
 def reader(): 
 	general_ledger = pd.read_excel(os.path.join(filedir,"input",filename))
 	general_dict = dict(zip(general_ledger.account, general_ledger.value))
 	return general_dict
 
+def chartReturn(chart):
+	df1 = pd.DataFrame(chart.items(), columns=['account', 'value']).sort_values(by = 'account')
+	with pd.ExcelWriter("path_to_file.xlsx") as writer:
+		df1.to_excel(writer, sheet_name="Sheet1", index=False)
+	print(df1)
+
+
+
 ledger = reader()
 
 chart = {}
 for key in list(ledger):
 	print(key)
-	chart[key] = ledger[key]
+	if key in chart:
+		chart[key] = chart[key] + ledger[key]
+	else:
+		chart[key] = ledger[key]
 	k = key.rfind(".")
 	while(k > 0):
 		ancestor = key[:k]
-		if ancestor in ledger:
+		if ancestor in chart:
 			chart[ancestor] = chart[ancestor] + ledger[key]
 		else:
 			chart[ancestor] = ledger[key]
 		print(ancestor)		
 		k = ancestor.rfind(".")
-	print(chart)
-	break
 	removido = ledger.pop(key)
-	#print(removido)
-	#print(key)
+# print(chart)
 
+chartReturn(chart)
 
-# print(ledger)
 
