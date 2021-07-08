@@ -9,11 +9,21 @@ class xlsxFunctions:
 		general_tuple = tuple(zip(general_ledger.account, general_ledger.value))
 		return general_tuple
 
-	def chartReturnXlsx(self, chart, filedir):
+	def populateChart(self, chart, filedir, filename):
+		chart_accounts = pd.read_excel(os.path.join(filedir, "input", filename))
+		list_accounts = list(chart_accounts.account)
+		if(set(list_accounts) == set(chart.keys())):
+			self.chartReturnXlsx(chart, filedir, filename)
+		# else: mensagem de erro
+
+		#general_tuple = tuple(zip(general_ledger.account, general_ledger.value))
+		#return general_tuple
+
+	def chartReturnXlsx(self, chart, filedir, filename):
 		df1 = pd.DataFrame(chart.items(), columns=['account', 'value']).sort_values(by = 'account').round(2)
 		if not os.path.exists(os.path.join(filedir, "output")):
 			os.makedirs(os.path.join(filedir, "output"))
-		with pd.ExcelWriter(os.path.join(filedir, "output","path_to_file.xlsx")) as writer:
+		with pd.ExcelWriter(os.path.join(filedir, "output", filename)) as writer:
 			df1.to_excel(writer, sheet_name="Sheet1", index=False)
 
 	def generateRandomLedger(self, quantity = 200, limitAccount = 50, limitComma = 5, limitValue = 10000):

@@ -8,6 +8,7 @@ import sqlFunctions as sqlf
 filedir = os.path.join(Path().absolute())
 filename = "general_ledger.xlsx"
 fileReturn = "chart_return.xlsx"
+filenamechart = "chart_of_accounts.xlsx"
 
 xlsxO = xlsxf.xlsxFunctions()
 sqlO = sqlf.sqlFunctions()
@@ -32,4 +33,6 @@ for element in ledger:
 		k = ancestor.rfind(".")
 
 # xlsxO.chartReturnXlsx(chart, filedir)
-xlsxO.generateRandomLedger()
+# xlsxO.generateRandomLedger()
+
+xlsxO.populateChart(chart, filedir, filenamechart)
