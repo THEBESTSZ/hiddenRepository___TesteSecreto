@@ -32,8 +32,9 @@ class sqlFunctions:
 	def verifyChartSql(self, chartUnpopuled, chartPopuled, filedir, filename):
 		if(set(*(map(set, zip(*chartUnpopuled)))) == set(chartPopuled.keys())):
 			self.chartReturnXlsx(chartPopuled, filedir, filename + ".xlsx")
+			print('\n\n\nSuccess!!! the file was saved with the name: "'+ filename+'" in the "output" folder\n\n\n')
 		else:
-			print("vc nao eh o bixao")
+			print('\n\n\nThe column "chart_of_accounts" does not match with the column "general_ledger"\n\n\n')
 
 	def chartReturnXlsx(self, chartVerified, filedir, filename):
 		df = pd.DataFrame(chartVerified.items(), columns=['account', 'value']).sort_values(by = 'account').round(2)

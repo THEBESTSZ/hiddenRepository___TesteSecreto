@@ -141,7 +141,7 @@ def run():
 		command = input("Digite o comando desejado: ")
 		if(command not in acceptCommands):
 			print("\n\n\nComando não encontrado!\n\n\n")
-			time.sleep(1)
+			time.sleep(2)
 		else:
 			acceptCommands[command]()
 
