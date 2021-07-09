@@ -13,6 +13,6 @@ class sqlFunctions:
 		general_tuple = cursor.fetchall()
 		return general_tuple
 
-	def insertSql(self):
-		cursor.execute("INSERT INTO general_ledger (account, value) VALUES('03.1.5.001', 494.36), ('03.1.5', 49.36)")
+	def insertSql(self, sumLedger):
+		cursor.execute("INSERT INTO general_ledger (account, value) VALUES" + sumLedger)
 		banco.commit()
