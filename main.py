@@ -8,9 +8,6 @@ import sqlFunctions as sqlf
 import ledgerFunctions as ledgerf
 
 filedir = os.path.join(Path().absolute())
-filename = "general_ledger.xlsx"
-fileReturn = "chart_return.xlsx"
-filenamechart = "chart_of_accounts.xlsx"
 
 xlsxO = xlsxf.xlsxFunctions()
 sqlO = sqlf.sqlFunctions()
@@ -21,7 +18,8 @@ ledgerO = ledgerf.ledgerFunctions()
 def do_populate_sql():
 	repeat = True
 	while(repeat):
-		dataBaseFile = input('Type a database file, with ".sql", that contains the tables general_ledger and chart_of_accounts: ')
+		dataBaseFile = input('Type a database file, without the ".sql", that contains the tables general_ledger and chart_of_accounts: ')
+		dataBaseFile = dataBaseFile + ".sql"
 		if os.path.exists(os.path.join(filedir, "sql", dataBaseFile)):
 			ledgerTuple, chartUnpopuled = sqlO.readerSql(filedir, dataBaseFile)
 			chartPopuled = ledgerO.sumLedgerValues(ledgerTuple)
@@ -31,10 +29,10 @@ def do_populate_sql():
 def do_sql():
 	while True:
 		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
-		print("Sql Menu:\n")
+		print("                                           Sql Menu:\n")
 		print("Type 1 to populate from a general_ledger table and a chart_of_accounts table")
 		print("Type any other bottom not listed to back to main menu")
-		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
+		print("\n\n#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
 		command = input("Digite o comando desejado: ")
 		if(command not in acceptCommandsSql):
 			break
@@ -48,8 +46,10 @@ def do_sql():
 def do_populate_xlsx():
 	repeat = True
 	while(repeat):
-		ledgerFile = input('Type a xlsx general_ledger file with the ".xlsx": ')
-		chartUnpopuledFile = input('Type a xlsx chart_of_accounts file file with the ".xlsx": ')
+		ledgerFile = input('Type a xlsx general_ledger file without the ".xlsx": ')
+		ledgerFile = ledgerFile + ".xlsx"
+		chartUnpopuledFile = input('Type a xlsx chart_of_accounts file file without the ".xlsx": ')
+		chartUnpopuledFile = chartUnpopuledFile + ".xlsx"
 		if os.path.exists(os.path.join(filedir, "input", ledgerFile)) and os.path.exists(os.path.join(filedir, "input", chartUnpopuledFile)):
 			ledgerTuple = xlsxO.readerXlsx(filedir, ledgerFile)
 			chartPopuled = ledgerO.sumLedgerValues(ledgerTuple)
@@ -59,10 +59,10 @@ def do_populate_xlsx():
 def do_xlsx():
 	while True:
 		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
-		print("Xlsx Menu:\n")
+		print("                                           Xlsx Menu:\n")
 		print("Type 1 to populate from a general_ledger file and a chart_of_accounts file")
 		print("Type any other bottom not listed to back to main menu")
-		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
+		print("\n\n#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
 		command = input("Digite o comando desejado: ")
 		if(command not in acceptCommandsXlsx):
 			break
@@ -73,26 +73,30 @@ def do_xlsx():
 
 # create test scope
 def do_test_xlsx():
-	ledgerFile = input('Type a name file to the general_ledger whithout the ".xlsx": ')
+	ledgerFile = input('Type a name file to the general_ledger file without the ".xlsx": ')
+	chartUnpopuledFile = input('Type a name file to the chart_of_accounts file without the ".xlsx": ')
 	ledgerTuple = ledgerO.generateRandomLedger()
-	chartUnpopuled = ledgerO.generateChartFromLedgerTuple(ledgerTuple)
-	xlsxO.saveLedgerTuple(ledgerTuple , filedir, ledgerFile + ".xlsx")
+	ledgerSum = ledgerO.sumLedgerValues(ledgerTuple)
+	chartUnpopuled = ledgerO.generateChartFromLedgerSum(ledgerSum)
+	xlsxO.saveLedgerTupleXlsx(ledgerTuple , filedir, ledgerFile + ".xlsx")
+	xlsxO.saveChartUnpopuledXlsx(chartUnpopuled , filedir, chartUnpopuledFile + ".xlsx")
 
 def do_test_sql():
-	dataBaseFile = input('Type a name file to the database whithout the ".sql": ')
+	dataBaseFile = input('Type a name file to the database without the ".sql": ')
 	ledgerTuple = ledgerO.generateRandomLedger()
-	chartUnpopuled = ledgerO.generateChartFromLedgerTuple(ledgerTuple)
+	ledgerSum = ledgerO.sumLedgerValues(ledgerTuple)
+	chartUnpopuled = ledgerO.generateChartFromLedgerSum(ledgerSum)
 	sqlO.createSql(filedir, dataBaseFile + ".sql")
 	sqlO.insertSql(ledgerTuple, chartUnpopuled, filedir, dataBaseFile + ".sql")
 
 def do_test():
 	while True:
 		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
-		print("Test Menu:\n")
+		print("                                           Test Menu:\n")
 		print("Type 1 to create to create a random test and save in xlsx format")
 		print("Type 2 to create to create a random test and save in sql database")
 		print("Type any bottom not listed to back to main menu")
-		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
+		print("\n\n#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
 		command = input("Digite o comando desejado: ")
 		if(command not in acceptCommandsTest):
 			break
@@ -128,12 +132,12 @@ def run():
 	print("Welcome to Ledger Processing Program!!!\n")
 	while True:
 		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
-		print("Main Menu:\n")
+		print("                                           Main Menu:\n")
 		print("Type 1 to process through an xlsx")
 		print("Type 2 to process through an sql")
 		print("Type 3 to generate a test")
 		print("Type 4 to exit")
-		print("#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
+		print("\n\n#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#")
 		command = input("Digite o comando desejado: ")
 		if(command not in acceptCommands):
 			print("\n\n\nComando não encontrado!\n\n\n")

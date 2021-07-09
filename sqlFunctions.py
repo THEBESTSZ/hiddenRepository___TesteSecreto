@@ -1,3 +1,4 @@
+import pandas as pd
 import sqlite3
 import os
 
@@ -29,16 +30,8 @@ class sqlFunctions:
 		base.commit()
 
 	def verifyChartSql(self, chartUnpopuled, chartPopuled, filedir, filename):
-
-		print(set(list(zip(*chartUnpopuled))))
-
-		print("-------------------------")
-
-		print(set(chartPopuled.keys()))
-
-		if(set(chartUnpopuled) == set(chartPopuled.keys())):
-			print("vc eh o bixao mesmo")
-			self.chartReturnXlsx(chartPopuled, filedir, filename)
+		if(set(*(map(set, zip(*chartUnpopuled)))) == set(chartPopuled.keys())):
+			self.chartReturnXlsx(chartPopuled, filedir, filename + ".xlsx")
 		else:
 			print("vc nao eh o bixao")
 

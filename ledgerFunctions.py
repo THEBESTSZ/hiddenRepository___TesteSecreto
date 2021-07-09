@@ -20,6 +20,10 @@ class ledgerFunctions:
 		chartUnpopuled.sort()
 		return chartUnpopuled
 
+	def generateChartFromLedgerSum(self, ledgerSum):
+		chartUnpopuled = ledgerSum.keys()
+		return chartUnpopuled
+
 	def sumLedgerValues(self, ledgerTuple):
 		ledgerSum = {}
 		for element in ledgerTuple:

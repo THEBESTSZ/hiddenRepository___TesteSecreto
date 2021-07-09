@@ -14,7 +14,9 @@ class xlsxFunctions:
 		list_accounts = list(chart_accounts.account)
 		if(set(list_accounts) == set(chartPopuled.keys())):
 			self.chartReturnXlsx(chartPopuled, filedir, filename)
-		# else: mensagem de erro
+			print('\n\n\nSuccess!!! the file was saved with the name: "'+ filename+'"\n\n\n')
+		else:
+			print('\n\n\nThe file "chart_accounts" does not match the file "ledger" passed\n\n\n')
 
 	def chartReturnXlsx(self, chartVerified, filedir, filename):
 		df = pd.DataFrame(chartVerified.items(), columns=['account', 'value']).sort_values(by = 'account').round(2)
@@ -23,16 +25,16 @@ class xlsxFunctions:
 		with pd.ExcelWriter(os.path.join(filedir, "output", filename)) as writer:
 			df.to_excel(writer, sheet_name="Sheet1", index=False)
 
-	def saveLedgerTuple(self, ledgerTuple, filedir, filename):
+	def saveLedgerTupleXlsx(self, ledgerTuple, filedir, filename):
 		df = pd.DataFrame(list(ledgerTuple), columns=['account', 'value'])
 		if not os.path.exists(os.path.join(filedir, "input")):
 			os.makedirs(os.path.join(filedir, "input"))
 		with pd.ExcelWriter(os.path.join(filedir, "input", filename)) as writer:
 			df.to_excel(writer, sheet_name="Sheet1", index=False)
 
-	def generateChartUnpopuledXlsx(self, sumLedger, filedir, filename):
-		df = pd.DataFrame(sumLedger.keys(), columns=['account']).sort_values(by = 'account')
-		if not os.path.exists(os.path.join(filedir, "inputTest")):
-			os.makedirs(os.path.join(filedir, "inputTest"))
-		with pd.ExcelWriter(os.path.join(filedir, "inputTest", filename)) as writer:
+	def saveChartUnpopuledXlsx(self, chartUnpopuled, filedir, filename):
+		df = pd.DataFrame(chartUnpopuled, columns=['account']).sort_values(by = 'account')
+		if not os.path.exists(os.path.join(filedir, "input")):
+			os.makedirs(os.path.join(filedir, "input"))
+		with pd.ExcelWriter(os.path.join(filedir, "input", filename)) as writer:
 			df.to_excel(writer, sheet_name="Sheet1", index=False)
