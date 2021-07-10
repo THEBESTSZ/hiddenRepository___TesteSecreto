@@ -4,6 +4,8 @@ import time
 
 class ledgerFunctions:
 
+	# Função para utilizada para gerar os testes, retorna um general_ledger em formato de tupla
+
 	def generateRandomLedger(self, quantity = 300, limitAccount = 50, limitComma = 5, limitValue = 10000):
 		try:
 			ledgerTuple = ()
@@ -20,6 +22,8 @@ class ledgerFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
 
+	# Função para obter o chart não populado através de um general_ledger em formato de tupla
+
 	def generateChartFromLedgerTuple(self, ledgerTuple):
 		try:
 			accountList = [entry[0] for entry in ledgerTuple]
@@ -30,6 +34,8 @@ class ledgerFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
 
+	# Função para obter o chart não populado através de um general_ledger em formato de dicionário (podemos dizer que o general_ledger em formato de dicionário é o chart populado)
+
 	def generateChartFromLedgerSum(self, ledgerSum):
 		try:
 			chartUnpopuled = ledgerSum.keys()
@@ -37,6 +43,8 @@ class ledgerFunctions:
 		except:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
+
+	# Função para obter o general_ledger em formato de dicionário (chart populado) através de um general_ledger em formato de tupla
 
 	def sumLedgerValues(self, ledgerTuple):
 		try:

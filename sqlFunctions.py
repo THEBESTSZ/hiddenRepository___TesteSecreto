@@ -5,6 +5,8 @@ import sys
 import time
 
 class sqlFunctions:
+
+	# Função para criar o arquivo sql com a tabela general_ledger e a tabela chart_of_accounts (chart não-populado)
 	
 	def createSql(self, filedir, nameData): 
 		try:
@@ -13,6 +15,7 @@ class sqlFunctions:
 			cursor.execute("CREATE TABLE general_ledger(account TEXT, value FLOAT)")
 			cursor.execute("CREATE TABLE chart_of_accounts(account TEXT)")
 			base.commit()
+			print('\n\n\nSuccess!!! the file was saved with the name: "'+ nameData+'" in the "sql" folder\n\n\n')
 		except sqlite3.Error as e:
 			print("\n\n\nSQL error: SQL archive", nameData, "already exists\n\n\n")
 			print("\n\n\nReplace the archive and reset data? Type yes or no (by typing no, new data will be inserted into the existing table ):", end = '', flush = True)
@@ -35,17 +38,16 @@ class sqlFunctions:
 					print("\n\n\nOS error: {0}".format(e), "\n\n\n")
 				except:
 					print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
-				finally:
-					time.sleep(2)
 		except PermissionError:
 			print("\n\n\nYou don't seem to have the rights to do that or the file is open")
-			time.sleep(2)
 		except OSError as e:
 			print("\n\n\nOS error: {0}".format(e), "\n\n\n")
-			time.sleep(2)
 		except:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
+		finally:
 			time.sleep(2)
+
+	# Função para ler os tabelas general_ledger e chart_of_accounts, retornando ambas em formato de tupla
 
 	def readerSql(self, filedir, nameData): 
 		try:
@@ -73,6 +75,8 @@ class sqlFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
 
+	# Função para inserir valores em ambas as tabelas, general_ledger e chart_of_accounts, no arquivo de formato sql informado. O arquivo sql deve estar na pasta sql
+
 	def insertSql(self, ledgerTuple, chartUnpopuled, filedir, nameData):
 		try:
 			base = sqlite3.connect(os.path.join(filedir, "sql", nameData))
@@ -96,18 +100,22 @@ class sqlFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
 
+	# Função para verificar se as contas da tabela chart não-populado condiz com as contas encontradas no general_ledger em formato de dicionário
+	# Caso seja, a função para salvar na pasta output é chamada (chartReturnXlsx)
 
 	def verifyChartSql(self, chartUnpopuled, chartPopuled, filedir, filename):
 		try:
 			if(set(*(map(set, zip(*chartUnpopuled)))) == set(chartPopuled.keys())):
 				self.chartReturnXlsx(chartPopuled, filedir, filename + ".xlsx")
-				print('\n\n\nSuccess!!! the file was saved with the name: "'+ filename+'" in the "output" folder\n\n\n')
+				print('\n\n\nSuccess!!! the file was saved with the name: "'+ filename + '.xlsx" in the "output" folder\n\n\n')
 			else:
 				print('\n\n\nThe column "chart_of_accounts" does not match with the column "general_ledger"\n\n\n')
 		except:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 		finally:
 			time.sleep(2)
+
+	# Função para salvar na pasta output em formato xlsx
 
 	def chartReturnXlsx(self, chartVerified, filedir, filename):
 		try:

@@ -5,6 +5,8 @@ import time
 
 class xlsxFunctions:
 
+	# Função para ler o arquivo general_ledger e converter para general_ledger em formato de tupla
+
 	def readerXlsx(self, filedir, filename): 
 		try:
 			general_ledger = pd.read_excel(os.path.join(filedir, "input", filename))
@@ -19,6 +21,9 @@ class xlsxFunctions:
 		except:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
+
+	# Função para verificar se as contas do arquivo chart não-populado condiz com as contas encontradas no general_ledger em formato de dicionário
+	# Caso seja, a função para salvar na pasta output é chamada (chartReturnXlsx)
 
 	def verifyChartXlsx(self, chartPopuled, filedir, filename):
 		try:
@@ -39,6 +44,8 @@ class xlsxFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
 
+	# Função para salvar na pasta output em formato xlsx
+
 	def chartReturnXlsx(self, chartVerified, filedir, filename):
 		try:
 			df = pd.DataFrame(chartVerified.items(), columns=['account', 'value']).sort_values(by = 'account').round(2)
@@ -56,6 +63,8 @@ class xlsxFunctions:
 		finally:
 			time.sleep(2)
 
+	# Função chamada na criação de testes, esta função em específico salva o arquivo general_ledger na pasta input
+
 	def saveLedgerTupleXlsx(self, ledgerTuple, filedir, filename):
 		try:
 			df = pd.DataFrame(list(ledgerTuple), columns=['account', 'value'])
@@ -72,6 +81,8 @@ class xlsxFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 		finally:
 			time.sleep(2)
+
+	# Função chamada na criação de testes, esta função em específico salva o arquivo chart não-populado na pasta input
 
 	def saveChartUnpopuledXlsx(self, chartUnpopuled, filedir, filename):
 		try:
