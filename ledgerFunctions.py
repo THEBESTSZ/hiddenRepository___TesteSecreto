@@ -22,7 +22,7 @@ class ledgerFunctions:
 			print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 			time.sleep(2)
 
-	# Função para obter o chart não populado através de um general_ledger em formato de tupla
+	# Função para obter o chart não populado através de um general_ledger em formato de tupla (Não utilizado)
 
 	def generateChartFromLedgerTuple(self, ledgerTuple):
 		try:
