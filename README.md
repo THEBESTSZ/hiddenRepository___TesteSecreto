@@ -38,6 +38,10 @@ In the test menu we can generate the input files.
 
 - In the thest genrator, in the generateRandomLedger function we have the parameters quantity (limit of accounts to be generated), limitAccount (as a default value 50, only accounts from 1 to 50.50.50.50.50.50 can be generated), limitComma (the dot limit on the account is 5), limitValue (maximum value for each account).
 
+### Tests 
+
+- The generated tests are in the input and sql folder and their results in the output folder 
+
 ### How to execute
 
 Make sure you have [python 3.x or greater](https://www.python.org/downloads/) and some of your libraries: [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html) and [sqlite3](https://pypi.org/project/db-sqlite3/). Then clone the project to some folder of interest with the command: 
