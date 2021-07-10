@@ -13,7 +13,7 @@ xlsxO = xlsxf.xlsxFunctions()
 sqlO = sqlf.sqlFunctions()
 ledgerO = ledgerf.ledgerFunctions()
 
-# sql scope
+# Sql scope
 
 # Ler do banco e retornar as tabelas general_ledger e chart não-populado para o usuário
 
@@ -74,9 +74,9 @@ def do_sql():
 		print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 		time.sleep(2)
 
-# end sql scope
+# End sql scope
 
-# xlsx scope
+# Xlsx scope
 
 # Popular um arquivo chart através de um arquivo general_ledger e um arquivo chart não-populado na pasta input (saída em xlsx na pasta output)
 
@@ -120,9 +120,9 @@ def do_xlsx():
 		time.sleep(2)
 
 
-# end xlsx scope
+# End xlsx scope
 
-# create test scope
+# Create test scope
 
 # Opção de gerar teste em xlsx
 
@@ -173,7 +173,7 @@ def do_test():
 		print("\n\n\nUnexpected error:", sys.exc_info()[0], "\n\n\n")
 		time.sleep(2)
 
-# end test scope
+# End test scope
 
 def do_exit():
     exit()
